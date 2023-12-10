@@ -6,6 +6,9 @@
 #include <stdlib.h>
 
 t_d_cell* createCell(int value, int nb_levels){
+    /*
+     * Create a cell using parameters information.
+     */
     t_d_cell *myCell = (t_d_cell *) malloc(sizeof (t_d_cell));
 
     myCell->value = value;
