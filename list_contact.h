@@ -24,4 +24,6 @@ contact *setContactSelected(t_d_listcontact *myList, char* fullname);
 
 void initializeContacts(t_d_listcontact *myList);
 
+void autocompleteContact(char *name);
+
 #endif //DIARY_MANAGEMENT_LIST_CONTACT_H

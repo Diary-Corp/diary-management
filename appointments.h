@@ -16,11 +16,16 @@ typedef struct s_appointment{
     char *Purpose;
 } appointment;
 
+
 void insertAppointmentAtBeginning(appointment *myAppointment, char *owner);
+
 appointment *createAppointment(int day, int month, int year, int hour, int lengthMinute, char *purpose, char *owner);
 void addAppointmentToContact(struct s_contact *myContact, appointment *newAppointment);
+
 void displayAppointment(appointment *myAppointment);
 void displayAppointments(struct s_contact *myContact);
-void displayFileAppointments(char* fullname);
+int displayFileAppointments(char* fullname);
+
+void deleteAppointment(int number, char* fullname);
 
 #endif //DIARY_MANAGEMENT_APPOINTMENTS_H

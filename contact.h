@@ -16,10 +16,12 @@ typedef struct s_contact
 } contact;
 
 void toLowerCase(char *string);
+
 void insertStringInSortedFile(const char *myString);
+
 contact *createContact(char *firstName, char *LastName, int nbLevels);
 contact *initializeContact(char *fullname, int nbLevels);
+
 void displayContactsFile();
-contact *findContact(char *name);
 
 #endif //DIARY_MANAGEMENT_CONTACT_H

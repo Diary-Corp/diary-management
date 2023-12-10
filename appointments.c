@@ -9,6 +9,10 @@
 #include "string.h"
 
 void insertAppointmentAtBeginning(appointment *myAppointment, char *owner) {
+    /*
+     * Insert an appointment at the top of his txt file using owner name.
+     */
+
     char filename[100];
     sprintf(filename, "../data/%s.txt", owner);
     FILE *file = fopen(filename, "a+");
@@ -44,6 +48,10 @@ void insertAppointmentAtBeginning(appointment *myAppointment, char *owner) {
 
 
 appointment *createAppointment(int day, int month, int year, int hour, int lengthMinute, char *purpose, char *owner){
+    /*
+     * Create an appointment using all the needed information.
+     */
+
     appointment *myAppointment = (appointment*)malloc(sizeof(appointment));
     myAppointment->DateDay = day;
     myAppointment->DateMonth = month;
@@ -57,16 +65,25 @@ appointment *createAppointment(int day, int month, int year, int hour, int lengt
 }
 
 void addAppointmentToContact(struct s_contact *myContact, appointment *newAppointment) {
+    /*
+     * Link an appointment to an existing contact given.
+     */
     myContact->nb_appointments++;
     myContact->myAppointments = (appointment**)realloc(myContact->myAppointments, myContact->nb_appointments * sizeof(appointment*));
     myContact->myAppointments[myContact->nb_appointments - 1] = newAppointment;
 }
 
 void displayAppointment(appointment *myAppointment){
+    /*
+     * Display the content of the appointment.
+     */
     printf("-> %d/%d/%d - %dh for %d min: %s\n", myAppointment->DateDay, myAppointment->DateMonth, myAppointment->DateYear, myAppointment->TimeHour, myAppointment->LengthMinute, myAppointment->Purpose);
 }
 
 void displayAppointments(struct s_contact *myContact){
+    /*
+     * Display all the appointments created by a contact.
+     */
     printf("Appointments of %s:\n", myContact->name);
     if (myContact->nb_appointments >= 1){
         for (int i=0; i<myContact->nb_appointments; i++){
@@ -77,7 +94,10 @@ void displayAppointments(struct s_contact *myContact){
     }
 }
 
-void displayFileAppointments(char* fullname){
+int displayFileAppointments(char* fullname){
+    /*
+     * Display all the appointments saved in the txt file.
+     */
     char filename[100];
     sprintf(filename, "../data/%s.txt", fullname);
     FILE *file = fopen(filename, "r");
@@ -92,7 +112,68 @@ void displayFileAppointments(char* fullname){
             i++;
         }
         fclose(file);
+        return 1;
     } else {
         printf("You have no appointments saved.\n");
+        return 0;
+    }
+}
+
+void deleteAppointment(int number, char* fullname) {
+    /*
+     * Delete the appointment situated on the x line given in parameter of a contact.
+     */
+
+    char filename[100];
+    sprintf(filename, "../data/%s.txt", fullname);
+
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("We couldn't open the file.");
+    }
+
+    char *tempBuffer = NULL;
+    size_t tempBufferSize = 0;
+    int appointmentDeleted = 0;
+
+    char line[256];
+    int currentLineNumber = 1;
+
+    while (fgets(line, sizeof(line), file) != NULL) {
+        if (currentLineNumber != number) {
+            size_t lineLength = strlen(line);
+            tempBuffer = realloc(tempBuffer, tempBufferSize + lineLength);
+            if (tempBuffer == NULL) {
+                perror("Error memory allocation");
+                fclose(file);
+            }
+            strcpy(tempBuffer + tempBufferSize, line);
+            tempBufferSize += lineLength;
+        } else {
+            appointmentDeleted = 1;
+        }
+
+        currentLineNumber++;
+    }
+
+    fclose(file);
+
+    file = fopen(filename, "w");
+    if (file == NULL) {
+        perror("We couldn't write into the file");
+        free(tempBuffer);
+    }
+
+    if (tempBuffer != NULL) {
+        fprintf(file, "%s", tempBuffer);
+        free(tempBuffer);
+    }
+
+    fclose(file);
+
+    if (appointmentDeleted){
+        printf("Success : Appointment deleted.\n");
+    } else {
+        printf("We couldn't delete this appointment\n");
     }
 }

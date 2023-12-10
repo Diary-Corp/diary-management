@@ -11,6 +11,9 @@
 #define MAX_BUFFER_SIZE 1000
 
 void toLowerCase(char *string){
+    /*
+     * transform a string to a lower case string.
+     */
     if (string == NULL) {
         return;
     }
@@ -21,6 +24,9 @@ void toLowerCase(char *string){
 }
 
 void insertStringInSortedFile(const char *myString) {
+    /*
+     * Insert a new contact in the list of contact sorted contained in the txt file data/contacts.txt.
+     */
     FILE *file = fopen("../data/contacts.txt", "r+");
 
     if (file != NULL) {
@@ -58,6 +64,9 @@ void insertStringInSortedFile(const char *myString) {
 }
 
 contact *createContact(char *firstName, char *lastName, int nbLevels){
+    /*
+     * Create a new contact using the given information and save it in the txt file.
+     */
     toLowerCase(firstName);
     toLowerCase(lastName);
 
@@ -84,6 +93,9 @@ contact *createContact(char *firstName, char *lastName, int nbLevels){
 }
 
 contact *initializeContact(char *fullname, int nbLevels){
+    /*
+     * Initialize the previous contact created who are contained inside the txt file data/contacts.txt
+     */
     contact *Contact = (contact*)malloc(sizeof (contact));
     Contact->name = (char*)malloc(strlen(fullname) + 1);
     strcpy(Contact->name, fullname);
@@ -95,8 +107,11 @@ contact *initializeContact(char *fullname, int nbLevels){
     return Contact;
 }
 
-/*
+
 void displayContactsFile(){
+    /*
+     * Display the first 100 contacts of the txt file.
+     */
     FILE *file = fopen("../data/contacts.txt", "r+");
 
     if(file != NULL){
@@ -114,4 +129,4 @@ void displayContactsFile(){
         printf("There is no contact.");
     }
 }
-*/
+
